@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const ProductController = require('./../controllers/productController');
 const ProductService = require('./../services/productService');
 const UserController = require('./../controllers/userController');
@@ -77,6 +78,14 @@ router.get('/users/handler/:handler', function(req, res, next) {
 router.post('/users', function(req, res, next) {
   UserInstance.postUser(req, res);
 });
+
+router.post('/users/admin', passport.authenticate('local'), function (req, res, next) {
+  return res.json({ok: true});
+})
+
+router.get('/users/admin', function(req, res, next) {
+  return res.json({ok: true})
+})
 
 //get /sales
 router.get('/sales', function(req, res, next) {

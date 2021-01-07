@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const UserService = require('./services/userService');
+const bcrypt = require('bcrypt');
 
 const UserInstance = new UserService();
 
@@ -16,7 +17,9 @@ passport.use(new LocalStrategy({
         //Este usuario esta mal
         return cb(null, false);
       };
-
+      
+      const compare = await bcrypt.compare(password, userData.password);
+      console.log(compare)
       if(userData.password != password){
         //Este usuario esta mal
         return cb(null, false);
