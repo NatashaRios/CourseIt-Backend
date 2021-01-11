@@ -11,16 +11,18 @@ passport.use(new LocalStrategy({
   }, 
   async (username, password, cb) => {
     try{
-      const userData = await UserInstance.getByName(username);
+      const userData = await UserInstance.getByName(username.toLowerCase());
      
       if(!userData){
         //Este usuario esta mal
         return cb(null, false);
       };
+      console.log(userData.password, password);
       
+      //Se le pasa primero la contraseña en texto plano, despues el hash y devuelve boolean
       const compare = await bcrypt.compare(password, userData.password);
       console.log(compare)
-      if(userData.password != password){
+      if(!compare){
         //Este usuario esta mal
         return cb(null, false);
       };
