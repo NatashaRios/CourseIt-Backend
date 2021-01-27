@@ -23,7 +23,7 @@ class SaleService{
   
   //get de sales por user
   getSaleUser(user){
-    const query = Sale.findOne({user: user}).exec();
+    const query = Sale.findOne({ user }).exec();
     return query;
   };
   

@@ -31,15 +31,14 @@ class SaleController{
 
   //post de sales
   async postSale(req, res){
-    const { product, user, date, sales } = req.body;
-    const sale = {
-      product: product,
-      user: user,
-      date: date,
-      sales: sales
-    };
-
-    if(sale){
+    const { product, user, date } = req.body;
+    
+    if(product && user && date && req.user){
+      const sale = {
+        product: product,
+        user: user,
+        date: date
+      };
       try{
         await this.saleService.addSale(sale);
         res.status(200).send('Sale added successfully');

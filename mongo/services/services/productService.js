@@ -33,8 +33,8 @@ class ProductService {
   };
 
   //filtrar productos que no tengan discount para agregarle la propiedad
-  addProperty(product){
-    const query = Product.updateMany({}, product);
+  addProperty(discount){
+    const query = Product.updateMany({}, discount);
     return query;
   };
 

@@ -1,4 +1,5 @@
 const User = require('./../models/userModel');
+const bcrypt = require('bcrypt');
 
 class UserService{
 
@@ -9,9 +10,15 @@ class UserService{
   };
 
   //agregar usuarios
-  addUser(user){
-    const newUser = new User(user);
-    return newUser.save();
+  async addUser(user){
+    try{
+      const hash = await bcrypt.hash(user.password, 10);
+      user.password = hash;
+      const newUser = new User(user);
+      return newUser.save();
+    }catch(e){
+      console.log(e);
+    }
   };
 
   //get de los users según el id

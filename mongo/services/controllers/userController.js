@@ -17,15 +17,15 @@ class UserController{
   //post de users
   async postUser(req, res){
     const { name, user, password, age, isAdmin } = req.body;
-    const userData = {
-      name: name,
-      user: user,
-      password: password,
-      age: age,
-      isAdmin: isAdmin
-    };
-
-    if(userData && isAdmin == true){
+    
+    if(name && user && password && age){
+      const userData = {
+        name: name.toLowerCase(),
+        user: user.toLowerCase(),
+        password: password,
+        age: age,
+        isAdmin: isAdmin
+      };
       try{
         await this.userService.addUser(userData);
         res.status(200).send('User added successfully');

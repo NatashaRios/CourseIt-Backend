@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const UserService = require('./services/userService');
+const bcrypt = require('bcrypt');
 
 const UserInstance = new UserService();
 
@@ -16,9 +17,10 @@ async (username, password, cb) => {
       return cb(null, false);
     };
 
-    if(userData.password != password){
+    const compare = await bcrypt.compare(password, userData.password);
+    if(!compare){
       return cb(null, false);
-    };
+    }
 
     return cb(null, userData);
   }catch(e){
@@ -26,7 +28,12 @@ async (username, password, cb) => {
   };
 }));
 
-passport.serializeUser(async (name, cb) => {
+passport.serializeUser((user, cb) => {
+  cb(null, user.name);
+});
+
+passport.deserializeUser(async (name, cb) => {
   const data = await UserInstance.getByName(name);
+
   cb(null, data);
 });

@@ -4,6 +4,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
+const productsRouter = require('./routes/products');
+const usersRouter = require('./routes/users');
+const salesRouter = require('./routes/sales');
 
 const passportConfig = require('./passport');
 const passport = require('passport');
@@ -28,5 +31,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', indexRouter);
+app.use('/products', productsRouter);
+app.use('/users', usersRouter);
+app.use('/sales', salesRouter);
 
 module.exports = app;
