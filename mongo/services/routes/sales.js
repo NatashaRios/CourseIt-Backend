@@ -3,7 +3,6 @@ const router = express.Router();
 const SaleController = require('./../controllers/saleController');
 const SaleService = require('../services/saleService');
 const checkAdmin = require('../utils/checkAdmin');
-const passport = require('passport');
 
 //Queremos crear un nuevo modelo de datos (en el mismo proyecto) para manejar las ventas de productos: [GET] /sales - [GET] /sales/:id - [GET] /sales/:user - [POST] /sales
 //Queremos crear un endpoint [GET] /sales/top que nos devuelva los productos ordenados por cantidad de ventas 
@@ -38,14 +37,5 @@ router.get('/user/:user', function(req, res, next) {
 router.post('/', checkAdmin, function(req, res, next) {
   SaleInstance.postSale(req, res);
 });
-
-router.post('/login', passport.authenticate('local'), function(req, res, next){
-  const user = {
-    name: req.user.name,
-    user: req.user.user,
-    age: req.user.age
-  };
-  return res.json(user);
-})
 
 module.exports = router;

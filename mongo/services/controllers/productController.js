@@ -35,7 +35,7 @@ class ProductController{
   async postProduct(req, res){
     const { name, price, description, category, stock, freeshipping } = req.body;
     
-    if(name && price && description && category && stock && freeshipping){
+    if(name && price && description && category && stock && freeshipping && req.user){
       const product = {
         name: name,
         price: price,
@@ -74,7 +74,7 @@ class ProductController{
     const { name, price, description, category, stock, freeshipping } = req.body;
     const { id } = req.params;
     
-    if(id && name && description && category && stock && freeshipping){
+    if(id && name && description && category && stock && freeshipping && req.user){
       const product = {
         name: name,
         price: price,
@@ -110,7 +110,7 @@ class ProductController{
   async putAddProperty(req, res){
     const { discount } = req.body;
     
-    if(!discount){
+    if(!discount && req.user){
       try{
         await this.productService.addProperty({...{}, discount: 0});
         res.status(200).send('Discount added successfully');

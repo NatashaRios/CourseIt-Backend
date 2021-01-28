@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const ProductController = require('./../controllers/productController');
 const ProductService = require('./../services/productService');
+const checkAdmin = require('../utils/checkAdmin');
 
 const ProductInstance = new ProductController(new ProductService());
 
 //Queremos crear una API para el manejo de productos: [GET] /products - [GET] /products/:id - [POST] /products - [PUT] /products/:id
 //Crear un nuevo endpoint que devuelva solo los productos que tengan entrega gratis [GET] /products/freeshipping
 //Queremos crear un nuevo endpoint que nos devuelva productos relacionados para un producto en particular. Para calcular los relacionados vamos a usar la categoria del producto: [GET] /:productId/relacionados
+//Queremos hacer que todos los metodos POST esten limitados a los usuarios que tengan isAdmin en valor true. Para esto queremos usar un middleware
+//Para hacer nuestra aplicación mas segura, queremos implementar passport y validar que exista una sesion valida antes de agregar nuevos productos o ventas
 
 //get /products
 router.get('/', function(req, res, next) {
@@ -15,7 +18,7 @@ router.get('/', function(req, res, next) {
 });
 
 //post /products
-router.post('/', function(req, res, next) {
+router.post('/', checkAdmin, function(req, res, next) {
   ProductInstance.postProduct(req, res);
 });
 
@@ -30,12 +33,12 @@ router.get('/:id', function(req, res, next){
 });
 
 //put /products/discount
-router.put('/discount', function(req, res, next){
+router.put('/discount', checkAdmin, function(req, res, next){
   ProductInstance.putAddProperty(req, res);
 });
 
 //put /products/:id
-router.put('/:id', function(req, res, next){
+router.put('/:id', checkAdmin, function(req, res, next){
   ProductInstance.putProduct(req, res);
 });
 
